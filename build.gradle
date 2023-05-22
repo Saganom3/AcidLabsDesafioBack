@@ -1,0 +1,85 @@
+group 'net.core.dci'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+
+    maven { url "https://maven.springframework.org/release" }
+    maven { url "https://maven.restlet.com"  }
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2"
+        }
+
+    }
+    ext {
+        serenityCoreVersion = '3.2.5'
+        serenityCucumberVersion = '3.2.5'
+        serenityEnsureVersion = '3.2.4'
+        junitVersion = '4.13.2'
+        assertJVersion = '3.20.2'
+        slf4jVersion = '2.0.0-alpha4'
+        apachePoiVersion= '5.0.0'
+        mavenSurefireVersion= '2.22.2'
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:3.3.2")
+        classpath("net.serenity-bdd:serenity-single-page-report:3.3.2")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
+
+
+
+dependencies {
+    testImplementation 'net.serenity-bdd:serenity-core:3.3.2'
+    implementation 'net.serenity-bdd:serenity-junit:3.3.2'
+    implementation 'net.serenity-bdd:serenity-cucumber:3.3.2'
+    implementation 'net.serenity-bdd:serenity-screenplay:3.3.2'
+    implementation 'net.serenity-bdd:serenity-screenplay-webdriver:3.3.2'
+    implementation 'net.serenity-bdd:serenity-ensure:3.3.2'
+    implementation 'org.assertj:assertj-core:3.23.1'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+    testImplementation "org.slf4j:slf4j-simple:2.0.0-alpha4"
+    testImplementation "junit:junit:4.13.2"
+    implementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: '3.3.2'
+    implementation group: 'net.serenity-bdd', name: 'serenity-json-summary-report', version: '3.1.15'
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
+    // https://mvnrepository.com/artifact/org.testng/testng
+    testImplementation 'org.testng:testng:7.7.1'
+
+
+    //Rest Assured
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+
+}
+test {
+    systemProperty "file.encoding", "ISO-8859-1"
+    enableAssertions = true
+    systemProperty 'tags', System.getProperty('tags', '')
+    systemProperty 'environment', System.getProperty('environment', '')
+}
+
+serenity {
+    reports = ['single-page-html','json-summary']
+}
+wrapper {
+    gradleVersion = "8.0.2"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)

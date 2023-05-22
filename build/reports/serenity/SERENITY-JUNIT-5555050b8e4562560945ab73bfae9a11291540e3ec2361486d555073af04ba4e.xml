@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite errors="0" failures="0" name="API Request" skipped="0" tests="3" time="5.7" timestamp="2023-05-22 01:26:11"><testcase name="GET"/><testcase name="DELETE"/><testcase name="CREATE"/></testsuite>
